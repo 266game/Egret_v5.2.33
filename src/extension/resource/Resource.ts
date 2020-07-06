@@ -363,8 +363,8 @@ namespace RES {
      * @includeExample extension/resource/GetResByUrl.ts
      * @language zh_CN
      */
-    export function getResByUrl(url:string,compFunc:Function,thisObject:any,type:string=""):void{
-        instance.getResByUrl(url,compFunc,thisObject,type);
+    export function getResByUrl(url:string,compFunc:Function,thisObject:any,type:string="",name:string=""):void{
+        instance.getResByUrl(url,compFunc,thisObject,type,name);
     }
     /**
      * Destroy a single resource file or a set of resources to the cache data, to return whether to delete success.
@@ -856,7 +856,7 @@ namespace RES {
 		 * @param thisObject {any}
 		 * @param type {string}
          */
-        public getResByUrl(url:string,compFunc:Function,thisObject:any,type:string=""):void{
+        public getResByUrl(url:string,compFunc:Function,thisObject:any,type:string="",name:string=""):void{
             if(!url){
                 egret.$callAsync(compFunc, thisObject);
                 return;
@@ -870,8 +870,9 @@ namespace RES {
             this._loadedUrlTypes[url] = type;
 
             let analyzer:AnalyzerBase = this.$getAnalyzerByType(type);
-
-            let name:string = url;
+            if(!name){
+                name = url
+            }
             let res:any = analyzer.getRes(name);
             if(res){
                 egret.$callAsync(compFunc, thisObject, res, url);

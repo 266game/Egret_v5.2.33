@@ -1172,14 +1172,14 @@ var RES;
      * @platform Web,Native
      * @language zh_CN
      */
-    function getResByUrl(url, compFunc, thisObject, type) {
+    function getResByUrl(url, compFunc, thisObject, type, name) {
         if (type === void 0) { type = ""; }
         if (!instance) {
             var message = egret.sys.tr(3200);
             egret.warn(message);
             return Promise.reject(message);
         }
-        return compatiblePromise(instance.getResByUrl(url, compFunc, thisObject, type));
+        return compatiblePromise(instance.getResByUrl(url, compFunc, thisObject, type, name));
     }
     RES.getResByUrl = getResByUrl;
     /**
@@ -1606,7 +1606,7 @@ var RES;
          * @param thisObject {any}
          * @param type {string}
          */
-        Resource.prototype.getResByUrl = function (url, compFunc, thisObject, type) {
+        Resource.prototype.getResByUrl = function (url, compFunc, thisObject, type, name) {
             var _this = this;
             if (type === void 0) { type = ""; }
             var r = RES.config.getResource(url);
@@ -1615,12 +1615,17 @@ var RES;
                     type = RES.config.__temp__get__type__via__url(url);
                 }
                 // manager.config.addResourceData({ name: url, url: url });
-                r = { name: url, url: url, type: type, root: '', extra: 1 };
+                if(!name){
+                    name = url
+                }
+                r = { name: name, url: url, type: type, root: '', extra: 1 };
                 RES.config.addResourceData(r);
-                r = RES.config.getResource(url);
+                r = RES.config.getResource(name);
                 if (!r) {
                     throw 'never';
                 }
+                r.root = ""
+                r.url = url
             }
             return RES.queue.pushResItem(r).then(function (value) {
                 RES.host.save(r, value);

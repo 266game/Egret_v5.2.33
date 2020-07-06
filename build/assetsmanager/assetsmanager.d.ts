@@ -600,7 +600,7 @@ declare module RES {
      * @platform Web,Native
      * @language zh_CN
      */
-    function getResByUrl(url: string, compFunc?: Function, thisObject?: any, type?: string): Promise<any>;
+    function getResByUrl(url: string, compFunc?: Function, thisObject?: any, type?: string, name?: string): Promise<any>;
     /**
      * Destroy a single resource file or a set of resources to the cache data, to return whether to delete success.
      * @param name Name attribute or resource group name of the load item in the configuration file.
@@ -856,7 +856,7 @@ declare module RES {
          * @param thisObject {any}
          * @param type {string}
          */
-        getResByUrl(url: string, compFunc?: Function, thisObject?: any, type?: string): Promise<any>;
+        getResByUrl(url: string, compFunc?: Function, thisObject?: any, type?: string, name?: string): Promise<any>;
         /**
          * 销毁单个资源文件或一组资源的缓存数据,返回是否删除成功。
          * @method RES.destroyRes

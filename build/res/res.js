@@ -2505,9 +2505,9 @@ var RES;
      * @includeExample extension/resource/GetResByUrl.ts
      * @language zh_CN
      */
-    function getResByUrl(url, compFunc, thisObject, type) {
+    function getResByUrl(url, compFunc, thisObject, type, name) {
         if (type === void 0) { type = ""; }
-        instance.getResByUrl(url, compFunc, thisObject, type);
+        instance.getResByUrl(url, compFunc, thisObject, type, name);
     }
     RES.getResByUrl = getResByUrl;
     /**
@@ -2973,7 +2973,7 @@ var RES;
          * @param thisObject {any}
          * @param type {string}
          */
-        Resource.prototype.getResByUrl = function (url, compFunc, thisObject, type) {
+        Resource.prototype.getResByUrl = function (url, compFunc, thisObject, type, name) {
             if (type === void 0) { type = ""; }
             if (!url) {
                 egret.$callAsync(compFunc, thisObject);
@@ -2986,7 +2986,10 @@ var RES;
             }
             this._loadedUrlTypes[url] = type;
             var analyzer = this.$getAnalyzerByType(type);
-            var name = url;
+            if(!name){
+                name = url
+            }
+            // 我在这里改过
             var res = analyzer.getRes(name);
             if (res) {
                 egret.$callAsync(compFunc, thisObject, res, url);

@@ -455,13 +455,13 @@ module RES {
      * @platform Web,Native
      * @language zh_CN
      */
-    export function getResByUrl(url: string, compFunc?: Function, thisObject?: any, type: string = ""): Promise<any> {
+    export function getResByUrl(url: string, compFunc?: Function, thisObject?: any, type: string = "", name?: string = ""): Promise<any> {
         if(!instance){
             let message = egret.sys.tr(3200)
             egret.warn(message)
             return Promise.reject(message);
         }
-        return compatiblePromise(instance.getResByUrl(url, compFunc, thisObject, type));
+        return compatiblePromise(instance.getResByUrl(url, compFunc, thisObject, type, name));
     }
     /**
      * Destroy a single resource file or a set of resources to the cache data, to return whether to delete success.
@@ -897,19 +897,24 @@ module RES {
          * @param type {string}
          */
         @checkNull
-        public getResByUrl(url: string, compFunc?: Function, thisObject?: any, type: string = ""): Promise<any> {
+        public getResByUrl(url: string, compFunc?: Function, thisObject?: any, type: string = "", name: string = ""): Promise<any> {
             let r = config.getResource(url);
             if (!r) {
                 if (!type) {
                     type = config.__temp__get__type__via__url(url);
                 }
                 // manager.config.addResourceData({ name: url, url: url });
-                r = { name: url, url, type, root: '', extra: 1 };
+                if(!name){
+                    name = url
+                }
+                r = { name: name, url: url, type, root: '', extra: 1 };
                 config.addResourceData(r);
                 r = config.getResource(url);
                 if (!r) {
                     throw 'never';
                 }
+                r.root = ""
+                r.url = url
             }
             return queue.pushResItem(r).then(value => {
                 host.save(r as ResourceInfo, value);

@@ -1297,7 +1297,7 @@ declare namespace RES {
      * @includeExample extension/resource/GetResByUrl.ts
      * @language zh_CN
      */
-    function getResByUrl(url: string, compFunc: Function, thisObject: any, type?: string): void;
+    function getResByUrl(url: string, compFunc: Function, thisObject: any, type?: string, name?: string): void;
     /**
      * Destroy a single resource file or a set of resources to the cache data, to return whether to delete success.
      * @param name Name attribute or resource group name of the load item in the configuration file.
