@@ -208,22 +208,27 @@ namespace egret.web {
      * 启动心跳计时器。
      */
     function startTicker(ticker: egret.sys.SystemTicker): void {
-        let requestAnimationFrame =
-            window["requestAnimationFrame"] ||
-            window["webkitRequestAnimationFrame"] ||
-            window["mozRequestAnimationFrame"] ||
-            window["oRequestAnimationFrame"] ||
-            window["msRequestAnimationFrame"];
+        // let requestAnimationFrame =
+        //     window["requestAnimationFrame"] ||
+        //     window["webkitRequestAnimationFrame"] ||
+        //     window["mozRequestAnimationFrame"] ||
+        //     window["oRequestAnimationFrame"] ||
+        //     window["msRequestAnimationFrame"];
 
-        if (!requestAnimationFrame) {
-            requestAnimationFrame = function (callback) {
-                return window.setTimeout(callback, 1000 / 60);
-            };
+        // if (!requestAnimationFrame) {
+        //     requestAnimationFrame = function (callback) {
+        //         return window.setTimeout(callback, 1000 / 60);
+        //     };
+        // }
+
+        // requestAnimationFrame(onTick);
+        if(egret["MainLoopTicker"]){
+            clearInterval(egret["MainLoopTicker"])
         }
+        egret["MainLoopTicker"] = setInterval(onTick, 1000 / 60);
 
-        requestAnimationFrame(onTick);
         function onTick(): void {
-            requestAnimationFrame(onTick);
+            // requestAnimationFrame(onTick);
             ticker.update();
         }
     }

@@ -3661,19 +3661,24 @@ var egret;
          * 启动心跳计时器。
          */
         function startTicker(ticker) {
-            var requestAnimationFrame = window["requestAnimationFrame"] ||
-                window["webkitRequestAnimationFrame"] ||
-                window["mozRequestAnimationFrame"] ||
-                window["oRequestAnimationFrame"] ||
-                window["msRequestAnimationFrame"];
-            if (!requestAnimationFrame) {
-                requestAnimationFrame = function (callback) {
-                    return window.setTimeout(callback, 1000 / 60);
-                };
+            // let requestAnimationFrame =
+            //     window["requestAnimationFrame"] ||
+            //     window["webkitRequestAnimationFrame"] ||
+            //     window["mozRequestAnimationFrame"] ||
+            //     window["oRequestAnimationFrame"] ||
+            //     window["msRequestAnimationFrame"];
+            // if (!requestAnimationFrame) {
+            //     requestAnimationFrame = function (callback) {
+            //         return window.setTimeout(callback, 1000 / 60);
+            //     };
+            // }
+            // requestAnimationFrame(onTick);
+            if (egret["MainLoopTicker"]) {
+                clearInterval(egret["MainLoopTicker"]);
             }
-            requestAnimationFrame(onTick);
+            egret["MainLoopTicker"] = setInterval(onTick, 1000 / 60);
             function onTick() {
-                requestAnimationFrame(onTick);
+                // requestAnimationFrame(onTick);
                 ticker.update();
             }
         }
